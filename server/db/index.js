@@ -14,9 +14,6 @@ const Inventory  = require('./models/Inventory')
 User.hasMany(Save)
 Save.belongsTo(User)
 
-Save.hasOne(Inventory)
-Inventory.belongsTo(Save)
-
 Save.belongsToMany(Stage)
 Stage.belongsToMany(Save)
 
