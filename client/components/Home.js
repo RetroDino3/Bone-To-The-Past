@@ -1,15 +1,17 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
+import Saves from './Saves'
 
 /**
  * COMPONENT
  */
-export const Home = props => {
-  const {username} = props
+export const Home = (props) => {
+  const { username } = props
 
   return (
     <div>
       <h3>Welcome, {username}</h3>
+      <Saves />
     </div>
   )
 }
@@ -17,9 +19,9 @@ export const Home = props => {
 /**
  * CONTAINER
  */
-const mapState = state => {
+const mapState = (state) => {
   return {
-    username: state.auth.username
+    username: state.auth.username,
   }
 }
 
