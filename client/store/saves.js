@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-const token = window.localStorage.getItem('token')
-
 /**
  * ACTION TYPES
  */
@@ -38,6 +36,7 @@ export const fetchUserSaves = (id) => {
 export const createNewSave = (userId) => {
   return async (dispatch) => {
     try {
+      const token = window.localStorage.getItem('token')
       const { data: newSave } = await axios.post('/api/saves', {
         userId,
         headers: { authorization: token },
@@ -52,6 +51,7 @@ export const createNewSave = (userId) => {
 export const updateSave = (save) => {
   return async (dispatch) => {
     try {
+      const token = window.localStorage.getItem('token')
       const { data: newSave } = await axios.put(`/api/saves/${save.id}`, {
         body: save,
         headers: { authorization: token },
@@ -66,6 +66,7 @@ export const updateSave = (save) => {
 export const deleteSave = (id) => {
   return async (dispatch) => {
     try {
+      const token = window.localStorage.getItem('token')
       const { data: save } = await axios.delete(`/api/saves/${id}`, {
         headers: {
           authorization: token,
