@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const {
-  models: { User },
+  models: { User, Save },
 } = require('../db')
 module.exports = router
 
@@ -18,21 +18,21 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:userId', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
-    const userSaveDate = await User.findOne({
-      where: {
-        attributes: ['id', 'username'],
-      },
-      include: [
-        {
-          model: Save,
-        },
-      ],
-    }) //Test to see if user exist send back 404 error
-    console.log('userSaveDate', userSaveDate)
-    res.send(userSaveDate)
-  } catch (error) {
-    next(error)
+    const user = await User.create()
+    res.json(user)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.params.id)
+    await user.destroy()
+    res.json(user)
+  } catch (err) {
+    next(err)
   }
 })
