@@ -23,9 +23,6 @@ Dinosaur.belongsToMany(Stage, { through: 'StageDinosaur' })
 Save.belongsToMany(Item, { through: Inventory })
 Item.belongsToMany(Save, { through: Inventory })
 
-Dinosaur.belongsToMany(Item, { through: 'DinosaurItem' })
-Item.belongsToMany(Dinosaur, { through: 'DinosaurItem' })
-
 module.exports = {
   db,
   models: {
