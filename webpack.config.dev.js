@@ -1,9 +1,9 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const TerserWebpackPlugin = require('terser-webpack-plugin')
 
 module.exports = {
+  mode: 'development',
   entry: './index',
   output: {
     filename: 'main.js',
@@ -37,6 +37,7 @@ module.exports = {
       },
     ],
   },
+  devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Phaser Game',
@@ -54,12 +55,10 @@ module.exports = {
       ],
     }),
   ],
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserWebpackPlugin({
-        test: /.\js$/i,
-      }),
-    ],
+  devServer: {
+    static: path.resolve(__dirname, 'build/static'),
+    hot: true,
+    port: 3000,
+    compress: true,
   },
 }
