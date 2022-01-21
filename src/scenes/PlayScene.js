@@ -54,6 +54,9 @@ export default class PlayScene extends Phaser.Scene {
     this.physics.add.collider(birds, platforms)
     this.physics.add.overlap(player, birds, this.collectBird, null, this)
 
+    // o: you can make a function out the shared logic written below so you
+    //  don't have to pass in the same data over and over again, just pass in what
+    //  varies into your custom util function
     /* ANIMATIONS*/
     this.anims.create({
       key: 'left',
@@ -104,6 +107,7 @@ export default class PlayScene extends Phaser.Scene {
       fill: '#000',
     })
 
+    // o: this can be made into a const
     // full screen
     let button = this.add
       .image(800 - 16, 16, 'git', 0)
@@ -126,6 +130,7 @@ export default class PlayScene extends Phaser.Scene {
       this
     )
 
+    // o: this can be made into a const
     let FKey = this.input.keyboard.addKey('F')
 
     FKey.on(
@@ -144,6 +149,7 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   update() {
+    // o: these can be made into consts
     let cursors = this.cursors
     let player = this.player
     let { velocity } = player.body
