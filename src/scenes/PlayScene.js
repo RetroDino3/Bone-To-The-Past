@@ -10,15 +10,13 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   preload() {
+    // the loading order here determines the layering of assets
     this.load.image('background', '/static/background.png')
-    this.load.spritesheet('ground', '/static/ground.png', {
-      frameWidth: 136,
-      frameHeight: 32,
-    })
+    this.load.image('ground', '/static/ground.png')
     this.load.image('bird48', '/static/bird48.png')
     this.load.spritesheet('hero', '/static/hero.png', {
-      frameWidth: 16,
-      frameHeight: 16,
+      frameWidth: 17,
+      frameHeight: 19,
     })
     this.load.image('git', '/static/egg-outline.png')
   }
@@ -26,36 +24,18 @@ export default class PlayScene extends Phaser.Scene {
   create() {
     this.add.image(game.config.width / 2, game.config.height / 2, 'background')
 
+    /* ASSETS */
     // platforms
     let platforms = this.physics.add.staticGroup()
 
     platforms.create(400, 600, 'ground').setScale(5).refreshBody()
-    platforms.create(198, 568, 'ground')
-    platforms.create(328, 568, 'ground')
+    platforms.create(198, 400, 'ground')
+    platforms.create(550, 300, 'ground')
 
     // player
-    let player = this.physics.add.sprite(300, 400, 'hero')
+    let player = this.physics.add.sprite(300, 400, 'hero').setScale(3)
     player.setCollideWorldBounds(true)
 
-    this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers('hero', { start: 8, end: 11 }),
-      frameRate: 10,
-      repeat: -1,
-    })
-
-    this.anims.create({
-      key: 'turn',
-      frames: [{ key: 'hero', frame: 4 }],
-      frameRate: 20,
-    })
-
-    this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers('hero', { start: 12, end: 15 }),
-      frameRate: 10,
-      repeat: -1,
-    })
     this.player = player
     this.cursors = this.input.keyboard.createCursorKeys()
 
@@ -73,6 +53,51 @@ export default class PlayScene extends Phaser.Scene {
     this.physics.add.collider(player, platforms)
     this.physics.add.collider(birds, platforms)
     this.physics.add.overlap(player, birds, this.collectBird, null, this)
+
+    /* ANIMATIONS*/
+    this.anims.create({
+      key: 'left',
+      frames: this.anims.generateFrameNumbers('hero', { start: 5, end: 8 }),
+      frameRate: 5,
+      repeat: -1,
+    })
+
+    this.anims.create({
+      key: 'turn',
+      frames: [{ key: 'hero', frame: 4 }],
+      frameRate: 20,
+    })
+
+    this.anims.create({
+      key: 'right',
+      frames: this.anims.generateFrameNumbers('hero', { start: 0, end: 3 }),
+      frameRate: 5,
+      repeat: -1,
+    })
+
+    this.anims.create({
+      key: 'jump-right',
+      frames: [{ key: 'hero', frame: 13 }],
+      frameRate: 20,
+    })
+
+    this.anims.create({
+      key: 'jump-left',
+      frames: [{ key: 'hero', frame: 14 }],
+      frameRate: 20,
+    })
+
+    this.anims.create({
+      key: 'fall-right',
+      frames: [{ key: 'hero', frame: 15 }],
+      frameRate: 20,
+    })
+
+    this.anims.create({
+      key: 'fall-left',
+      frames: [{ key: 'hero', frame: 16 }],
+      frameRate: 20,
+    })
 
     this.scoreText = this.add.text(16, 16, 'score: 0', {
       fontSize: '32px',
@@ -121,16 +146,25 @@ export default class PlayScene extends Phaser.Scene {
   update() {
     let cursors = this.cursors
     let player = this.player
+    let { velocity } = player.body
 
-    if (cursors.left.isDown) {
-      player.setVelocityX(-160)
+    if (velocity.y < 0 && velocity.x > 0) {
+      player.anims.play('jump-right')
+    } else if (velocity.y < 0 && velocity.x < 0) {
+      player.anims.play('jump-left')
+    } else if (velocity.y > 0 && velocity.x > 0) {
+      player.anims.play('fall-right')
+    } else if (velocity.y > 0 && velocity.x < 0) {
+      player.anims.play('fall-left')
+    } else if (cursors.left.isDown) {
+      player.setVelocityX(-100)
 
       player.anims.play('left', true)
     } else if (cursors.right.isDown) {
-      player.setVelocityX(160)
+      player.setVelocityX(100)
 
       player.anims.play('right', true)
-    } else {
+    } else if (player.body.touching.down) {
       player.setVelocityX(0)
 
       player.anims.play('turn')
@@ -140,6 +174,7 @@ export default class PlayScene extends Phaser.Scene {
       player.setVelocityY(-330)
     }
   }
+
   collectBird(player, bird) {
     bird.disableBody(true, true)
 
