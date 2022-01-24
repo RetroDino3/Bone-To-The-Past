@@ -9,11 +9,10 @@ export default class GameOver extends Phaser.Scene {
     this.load.audio('endBGM', '/static/No Hope.mp3')
   }
   create() {
-    let endBGM = this.sound.add('endBGM', { loop: false })
-    endBGM.play()
-    this.endBGM = endBGM
+    this.endBGM = this.sound.add('endBGM', { loop: false })
+    this.endBGM.play()
 
-    let endText = this.make.text({
+    this.make.text({
       x: 300,
       y: 175,
       text: 'Game Over',
@@ -23,7 +22,7 @@ export default class GameOver extends Phaser.Scene {
       }
     })
 
-    let contText = this.make.text({
+    const contText = this.make.text({
       x: 350,
       y: 350,
       text: 'Main Menu',
