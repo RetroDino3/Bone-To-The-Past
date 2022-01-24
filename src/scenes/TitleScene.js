@@ -11,14 +11,12 @@ export default class TitleScene extends Phaser.Scene {
     this.load.audio('titleBGM', '/static/A New Dawn Title Screen.mp3')
   }
   create() {
-    let titleBGM = this.sound.add('titleBGM', { loop: true })
-    this.titleBGM = titleBGM
-    titleBGM.play()
+    this.titleBGM = this.sound.add('titleBGM', { loop: true })
+    this.titleBGM.play()
 
-    let titleBg = this.add.image(400, 300, 'titleBackground')
-    titleBg.setScale(0.5)
+    this.add.image(400, 300, 'titleBackground').setScale(0.5)
 
-    let titleText = this.make.text({
+    this.make.text({
       x: 250,
       y: 175,
       text: 'Bone To The Past',
@@ -28,7 +26,7 @@ export default class TitleScene extends Phaser.Scene {
       }
     })
 
-    let startText = this.make.text({
+    const startText = this.make.text({
       x: 350,
       y: 375,
       text: 'Start',
