@@ -28,8 +28,18 @@ export default class TitleScene extends Phaser.Scene {
 
     const startText = this.make.text({
       x: 350,
-      y: 375,
+      y: 275,
       text: 'Start',
+      style: {
+        fontSize: '30px',
+        align: 'center'
+      }
+    })
+
+    const aboutText = this.make.text({
+      x: 350,
+      y: 375,
+      text: 'About',
       style: {
         fontSize: '30px',
         align: 'center'
@@ -38,9 +48,15 @@ export default class TitleScene extends Phaser.Scene {
 
     startText.setInteractive({useHandCursor: true})
     startText.on('pointerdown', () => {this.clickTitle()})
+    aboutText.setInteractive({useHandCursor: true})
+    aboutText.on('pointerdown', () => {this.clickAbout()})
   }
   clickTitle() {
     this.titleBGM.stop()
     this.scene.switch('PlayScene')
+  }
+
+  clickAbout() {
+    this.scene.switch('AboutScene')
   }
 }
