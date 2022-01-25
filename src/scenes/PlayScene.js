@@ -1,102 +1,55 @@
 import * as Phaser from 'phaser'
 
+let isTouchingGround = true
+
 export default class PlayScene extends Phaser.Scene {
   constructor() {
     super({ key: 'PlayScene' })
     this.player = null
-    this.cursors = null
     this.score = 0
     this.scoreText = null
   }
 
+  init() {
+    this.cursors = this.input.keyboard.createCursorKeys()
+  }
+
   preload() {
     // the loading order here determines the layering of assets
-    this.load.image('background', '/static/background.png')
-    this.load.image('ground', '/static/ground.png')
-    this.load.image('bird48', '/static/bird48.png')
-    this.load.spritesheet('hero', '/static/hero.png', {
-      frameWidth: 17,
-      frameHeight: 19,
-    })
-    this.load.image('git', '/static/egg-outline.png')
+
+    this.load.image('tiles', '/static/greensides.png')
+    this.load.tilemapTiledJSON('tilemap', '/static/stage1.json')
+    this.load.atlas('hero', '/static/hero.png', '/static/hero.json')
+    this.load.image('fullScreen', '/static/egg-outline.png')
   }
 
   create() {
-    this.add.image(game.config.width / 2, game.config.height / 2, 'background')
-
-    /* ASSETS */
-    // platforms
-    let platforms = this.physics.add.staticGroup()
-
-    platforms.create(400, 600, 'ground').setScale(5).refreshBody()
-    platforms.create(198, 400, 'ground')
-    platforms.create(550, 300, 'ground')
-
-    // player
-    let player = this.physics.add.sprite(300, 400, 'hero').setScale(3)
-    player.setCollideWorldBounds(true)
-
-    this.player = player
-    this.cursors = this.input.keyboard.createCursorKeys()
-
-    // bird
-    let birds = this.physics.add.group({
-      key: 'bird48',
-      repeat: 11,
-      setXY: { x: 12, y: 0, stepX: 70 },
-    })
-
-    birds.children.iterate(function (child) {
-      child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8))
-    })
-
-    this.physics.add.collider(player, platforms)
-    this.physics.add.collider(birds, platforms)
-    this.physics.add.overlap(player, birds, this.collectBird, null, this)
-
     /* ANIMATIONS*/
-    this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers('hero', { start: 5, end: 8 }),
-      frameRate: 5,
-      repeat: -1,
-    })
+    this.createHeroAnimations()
 
-    this.anims.create({
-      key: 'turn',
-      frames: [{ key: 'hero', frame: 4 }],
-      frameRate: 20,
-    })
+    /* TILES */
+    const map = this.make.tilemap({ key: 'tilemap' })
+    const tileset = map.addTilesetImage('greensides', 'tiles')
+    map.createLayer('sky', tileset)
+    const platforms = map.createLayer('platforms', tileset)
+    const trees = map.createLayer('trees', tileset)
+    map.createLayer('foliage', tileset)
 
-    this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers('hero', { start: 0, end: 3 }),
-      frameRate: 5,
-      repeat: -1,
-    })
+    platforms.setCollisionByProperty({ collides: true })
+    trees.setCollisionByProperty({ collides: true })
 
-    this.anims.create({
-      key: 'jump-right',
-      frames: [{ key: 'hero', frame: 13 }],
-      frameRate: 20,
-    })
+    this.matter.world.convertTilemapLayer(platforms)
+    this.matter.world.convertTilemapLayer(trees)
 
-    this.anims.create({
-      key: 'jump-left',
-      frames: [{ key: 'hero', frame: 14 }],
-      frameRate: 20,
-    })
+    /* PLAYER */
+    this.player = this.matter.add
+      .sprite(10, 548, 'hero')
+      .play('hero-idle')
+      .setFixedRotation()
 
-    this.anims.create({
-      key: 'fall-right',
-      frames: [{ key: 'hero', frame: 15 }],
-      frameRate: 20,
-    })
-
-    this.anims.create({
-      key: 'fall-left',
-      frames: [{ key: 'hero', frame: 16 }],
-      frameRate: 20,
+    // Detect collision with ground
+    this.matter.world.on('collisionactive', (player, platforms) => {
+      isTouchingGround = true
     })
 
     this.scoreText = this.add.text(16, 16, 'score: 0', {
@@ -104,9 +57,10 @@ export default class PlayScene extends Phaser.Scene {
       fill: '#000',
     })
 
-    // full screen
+    /* FULL SCREEN */
+
     let button = this.add
-      .image(800 - 16, 16, 'git', 0)
+      .image(800 - 16, 16, 'fullScreen', 0)
       .setOrigin(1, 0)
       .setInteractive()
 
@@ -141,44 +95,65 @@ export default class PlayScene extends Phaser.Scene {
       },
       this
     )
+
+    /* CAMERA */
+    const mainCam = this.cameras.main
+    mainCam.setZoom(3)
+    mainCam.setBounds(0, 0, game.config.width, game.config.height)
+    mainCam.startFollow(this.player)
   }
 
   update() {
-    let cursors = this.cursors
-    let player = this.player
-    let { velocity } = player.body
+    const { left, right, up, down, space, shift } = this.cursors
+    const speed = 1
 
-    if (velocity.y < 0 && velocity.x > 0) {
-      player.anims.play('jump-right')
-    } else if (velocity.y < 0 && velocity.x < 0) {
-      player.anims.play('jump-left')
-    } else if (velocity.y > 0 && velocity.x > 0) {
-      player.anims.play('fall-right')
-    } else if (velocity.y > 0 && velocity.x < 0) {
-      player.anims.play('fall-left')
-    } else if (cursors.left.isDown) {
-      player.setVelocityX(-100)
-
-      player.anims.play('left', true)
-    } else if (cursors.right.isDown) {
-      player.setVelocityX(100)
-
-      player.anims.play('right', true)
-    } else if (player.body.touching.down) {
-      player.setVelocityX(0)
-
-      player.anims.play('turn')
+    if (left.isDown) {
+      this.player.flipX = true
+      this.player.setVelocityX(-speed)
+      this.player.anims.play('hero-walk', true)
+    } else if (right.isDown) {
+      this.player.flipX = false
+      this.player.setVelocityX(speed)
+      this.player.anims.play('hero-walk', true)
+    } else {
+      this.player.setVelocityX(0)
+      this.player.anims.play('hero-idle', true)
     }
-
-    if (cursors.up.isDown && player.body.touching.down) {
-      player.setVelocityY(-330)
+    if (this.player.body.velocity.y < -1) {
+      this.player.anims.play('hero-leap', true)
+    } else if (this.player.body.velocity.y > 1) {
+      this.player.anims.play('hero-fall', true)
+    }
+    if (Phaser.Input.Keyboard.JustDown(up) && isTouchingGround) {
+      this.player.setVelocityY(-speed * 7)
+      isTouchingGround = false
     }
   }
 
-  collectBird(player, bird) {
-    bird.disableBody(true, true)
-
-    this.score += 10
-    this.scoreText.setText('Score: ' + this.score)
+  /* METHODS */
+  createHeroAnimations() {
+    this.anims.create({
+      key: 'hero-idle',
+      frames: [{ key: 'hero', frame: 'hero-walk-04.png' }],
+    })
+    this.anims.create({
+      key: 'hero-walk',
+      frameRate: 5,
+      frames: this.anims.generateFrameNames('hero', {
+        start: 1,
+        end: 5,
+        prefix: 'hero-walk-0',
+        suffix: '.png',
+      }),
+      repeat: -1,
+    })
+    this.anims.create({
+      key: 'hero-leap',
+      frames: [{ key: 'hero', frame: 'hero-leap.png' }],
+    })
+    this.anims.create({
+      key: 'hero-fall',
+      frames: [{ key: 'hero', frame: 'hero-fall.png' }],
+    })
   }
 }
