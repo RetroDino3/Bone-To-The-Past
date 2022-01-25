@@ -11,7 +11,7 @@ export default class TitleScene extends Phaser.Scene {
     this.load.audio('titleBGM', '/static/A New Dawn Title Screen.mp3')
   }
   create() {
-    this.titleBGM = this.sound.add('titleBGM', { loop: true })
+    this.titleBGM = this.sound.add('titleBGM', { loop: true, volume: 0.33 })
     this.titleBGM.play()
 
     this.add.image(400, 300, 'titleBackground').setScale(0.5)

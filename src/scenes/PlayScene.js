@@ -8,6 +8,7 @@ export default class PlayScene extends Phaser.Scene {
     this.player = null
     this.score = 0
     this.scoreText = null
+    this.battle1 = null
   }
 
   init() {
@@ -21,6 +22,7 @@ export default class PlayScene extends Phaser.Scene {
     this.load.tilemapTiledJSON('tilemap', '/static/stage1.json')
     this.load.atlas('hero', '/static/hero.png', '/static/hero.json')
     this.load.image('fullScreen', '/static/egg-outline.png')
+    this.load.audio('battle1', '/static/Battle Theme 1.mp3')
   }
 
   create() {
@@ -98,9 +100,12 @@ export default class PlayScene extends Phaser.Scene {
 
     /* CAMERA */
     const mainCam = this.cameras.main
-    mainCam.setZoom(3)
+    // mainCam.setZoom(3)
     mainCam.setBounds(0, 0, game.config.width, game.config.height)
     mainCam.startFollow(this.player)
+
+    this.battle1 = this.sound.add('battle1', { loop: true, volume: 0.2 })
+    this.battle1.play()
   }
 
   update() {

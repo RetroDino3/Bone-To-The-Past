@@ -10,7 +10,7 @@ export default class VictoryScene extends Phaser.Scene {
     this.load.audio('victoryBGM', '/static/Victory1.mp3')
   }
   create() {
-    this.victoryBGM = this.sound.add('victoryBGM', { loop: false })
+    this.victoryBGM = this.sound.add('victoryBGM', { loop: false, volume: 0.33 })
     this.victoryBGM.play()
 
     this.make.text({
