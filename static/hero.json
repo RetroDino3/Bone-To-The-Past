@@ -1,0 +1,92 @@
+{"frames": [
+
+{
+	"filename": "hero-die.png",
+	"frame": {"x":1,"y":1,"w":18,"h":19},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":19},
+	"sourceSize": {"w":18,"h":19}
+},
+{
+	"filename": "hero-fall.png",
+	"frame": {"x":21,"y":1,"w":17,"h":19},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":17,"h":19},
+	"sourceSize": {"w":17,"h":19}
+},
+{
+	"filename": "hero-hurt.png",
+	"frame": {"x":40,"y":1,"w":17,"h":19},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":17,"h":19},
+	"sourceSize": {"w":17,"h":19}
+},
+{
+	"filename": "hero-leap.png",
+	"frame": {"x":59,"y":1,"w":17,"h":19},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":17,"h":19},
+	"sourceSize": {"w":17,"h":19}
+},
+{
+	"filename": "hero-throw-01.png",
+	"frame": {"x":78,"y":1,"w":17,"h":19},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":17,"h":19},
+	"sourceSize": {"w":17,"h":19}
+},
+{
+	"filename": "hero-throw-02.png",
+	"frame": {"x":97,"y":1,"w":17,"h":19},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":17,"h":19},
+	"sourceSize": {"w":17,"h":19}
+},
+{
+	"filename": "hero-walk-01.png",
+	"frame": {"x":116,"y":1,"w":17,"h":19},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":17,"h":19},
+	"sourceSize": {"w":17,"h":19}
+},
+{
+	"filename": "hero-walk-02.png",
+	"frame": {"x":135,"y":1,"w":17,"h":19},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":17,"h":19},
+	"sourceSize": {"w":17,"h":19}
+},
+{
+	"filename": "hero-walk-03.png",
+	"frame": {"x":154,"y":1,"w":17,"h":19},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":17,"h":19},
+	"sourceSize": {"w":17,"h":19}
+},
+{
+	"filename": "hero-walk-04.png",
+	"frame": {"x":173,"y":1,"w":17,"h":19},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":17,"h":19},
+	"sourceSize": {"w":17,"h":19}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "hero.png",
+	"format": "RGBA8888",
+	"size": {"w":191,"h":21},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:953d9fe38804ca745cd9f60e604e708f:b8588fa58bac4dcd6c3c699f1650484f:eec64b416d3f54b5cb5181ef71d8f236$"
+}
+}

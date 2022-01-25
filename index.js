@@ -9,10 +9,9 @@ const config = {
   width: 800,
   height: 600,
   physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: { y: 300 },
-      debug: false,
+    default: 'matter',
+    matter: {
+      debug: true,
     },
   },
   scene: [TitleScene, PlayScene, GameOver],
