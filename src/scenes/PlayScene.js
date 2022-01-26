@@ -9,6 +9,7 @@ export default class PlayScene extends Phaser.Scene {
     this.score = 0
     this.scoreText = null
     this.battle1 = null
+    this.lives = 3
   }
 
   init() {
@@ -133,6 +134,14 @@ export default class PlayScene extends Phaser.Scene {
       this.player.setVelocityY(-speed * 7)
       isTouchingGround = false
     }
+
+    if (this.player.body.position.y > 600 && this.lives > 1) {
+      this.fallDeath()
+    } else if (this.player.body.position.y > 600 && this.lives === 1) {
+      this.battle1.stop()
+      this.lives = 3
+      this.scene.switch('GameOver')
+    }
   }
 
   /* METHODS */
@@ -160,5 +169,11 @@ export default class PlayScene extends Phaser.Scene {
       key: 'hero-fall',
       frames: [{ key: 'hero', frame: 'hero-fall.png' }],
     })
+  }
+
+  fallDeath() {
+      this.battle1.stop()
+      this.scene.restart()
+      this.lives--
   }
 }
