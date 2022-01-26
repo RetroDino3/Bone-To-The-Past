@@ -105,7 +105,7 @@ export default class PlayScene extends Phaser.Scene {
     mainCam.setBounds(0, 0, game.config.width, game.config.height)
     mainCam.startFollow(this.player)
 
-    this.battle1 = this.sound.add('battle1', { loop: true, volume: 0.2 })
+    this.battle1 = this.sound.add('battle1', { loop: true, volume: 0.15 })
     this.battle1.play()
   }
 
