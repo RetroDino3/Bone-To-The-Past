@@ -55,9 +55,14 @@ export default class PlayScene extends Phaser.Scene {
       isTouchingGround = true
     })
 
-    this.scoreText = this.add.text(16, 16, 'score: 0', {
-      fontSize: '32px',
+    this.scoreText = this.add.text(16, 16, 'Score: 0', {
+      fontSize: '24px',
       fill: '#000',
+    })
+
+    this.add.text(16, 48, `Lives: ${this.lives}`, {
+      fontSize: '24px',
+      fill: '#000'
     })
 
     /* FULL SCREEN */
