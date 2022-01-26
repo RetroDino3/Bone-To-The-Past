@@ -9,6 +9,7 @@ export default class PlayScene extends Phaser.Scene {
     this.score = 0
     this.scoreText = null
     this.battle1 = null
+    this.lives = 3
   }
 
   init() {
@@ -54,9 +55,14 @@ export default class PlayScene extends Phaser.Scene {
       isTouchingGround = true
     })
 
-    this.scoreText = this.add.text(16, 16, 'score: 0', {
-      fontSize: '32px',
+    this.scoreText = this.add.text(16, 16, 'Score: 0', {
+      fontSize: '24px',
       fill: '#000',
+    })
+
+    this.add.text(16, 48, `Lives: ${this.lives}`, {
+      fontSize: '24px',
+      fill: '#000'
     })
 
     /* FULL SCREEN */
@@ -104,7 +110,7 @@ export default class PlayScene extends Phaser.Scene {
     mainCam.setBounds(0, 0, game.config.width, game.config.height)
     mainCam.startFollow(this.player)
 
-    this.battle1 = this.sound.add('battle1', { loop: true, volume: 0.2 })
+    this.battle1 = this.sound.add('battle1', { loop: true, volume: 0.15 })
     this.battle1.play()
   }
 
@@ -133,6 +139,14 @@ export default class PlayScene extends Phaser.Scene {
       this.player.setVelocityY(-speed * 7)
       isTouchingGround = false
     }
+
+    if (this.player.body.position.y > 600 && this.lives > 1) {
+      this.fallDeath()
+    } else if (this.player.body.position.y > 600 && this.lives === 1) {
+      this.battle1.stop()
+      this.lives = 3
+      this.scene.switch('GameOver')
+    }
   }
 
   /* METHODS */
@@ -160,5 +174,11 @@ export default class PlayScene extends Phaser.Scene {
       key: 'hero-fall',
       frames: [{ key: 'hero', frame: 'hero-fall.png' }],
     })
+  }
+
+  fallDeath() {
+      this.battle1.stop()
+      this.scene.restart()
+      this.lives--
   }
 }
