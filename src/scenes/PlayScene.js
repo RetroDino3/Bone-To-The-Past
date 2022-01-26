@@ -13,6 +13,7 @@ export default class PlayScene extends Phaser.Scene {
 
   init() {
     this.cursors = this.input.keyboard.createCursorKeys()
+    this.scene.launch('AboutScene')
   }
 
   preload() {
@@ -54,10 +55,10 @@ export default class PlayScene extends Phaser.Scene {
       isTouchingGround = true
     })
 
-    this.scoreText = this.add.text(16, 16, 'score: 0', {
-      fontSize: '32px',
-      fill: '#000',
-    })
+    // this.scoreText = this.add.text(16, 16, 'score: 0', {
+    //   fontSize: '32px',
+    //   fill: '#000',
+    // })
 
     /* FULL SCREEN */
 
@@ -81,6 +82,20 @@ export default class PlayScene extends Phaser.Scene {
       },
       this
     )
+    this.make.text({
+      x: 375,
+      y: 16,
+      text: 'Pause',
+      style: {
+        fontSize: '16px',
+        align: 'center',
+        fill: '#000',
+      },
+    })
+    Pause.setInteractive({ useHandCursor: true })
+    Pause.on('pointerdown', () => {
+      this.scene.pause()
+    })
 
     let FKey = this.input.keyboard.addKey('F')
 
@@ -100,7 +115,7 @@ export default class PlayScene extends Phaser.Scene {
 
     /* CAMERA */
     const mainCam = this.cameras.main
-    // mainCam.setZoom(3)
+    mainCam.setZoom(3)
     mainCam.setBounds(0, 0, game.config.width, game.config.height)
     mainCam.startFollow(this.player)
 
