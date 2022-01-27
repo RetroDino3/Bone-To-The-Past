@@ -14,6 +14,7 @@ export default class PlayScene extends Phaser.Scene {
 
   init() {
     this.cursors = this.input.keyboard.createCursorKeys()
+    this.scene.launch('UIScene')
   }
 
   preload() {
@@ -55,58 +56,41 @@ export default class PlayScene extends Phaser.Scene {
       isTouchingGround = true
     })
 
-    this.scoreText = this.add.text(16, 16, 'Score: 0', {
-      fontSize: '24px',
-      fill: '#000',
-    })
-
-    this.add.text(16, 48, `Lives: ${this.lives}`, {
-      fontSize: '24px',
-      fill: '#000'
-    })
-
-    /* FULL SCREEN */
-
-    let button = this.add
-      .image(800 - 16, 16, 'fullScreen', 0)
-      .setOrigin(1, 0)
-      .setInteractive()
-
-    button.on(
-      'pointerup',
-      function () {
-        if (this.scale.isFullscreen) {
-          button.setFrame(0)
-
-          this.scale.stopFullscreen()
-        } else {
-          button.setFrame(1)
-
-          this.scale.startFullscreen()
-        }
+    //Pause
+    let Pause = this.make.text({
+      x: 375,
+      y: 16,
+      text: 'Pause',
+      style: {
+        fontSize: '16px',
+        align: 'center',
+        fill: '#000',
       },
-      this
-    )
+    })
+    Pause.setInteractive({ useHandCursor: true })
+    {
+      Pause.on(
+        'pointerup',
+        () => {
+          this.scene.pause()
+        },
+        this
+      )
+    }
 
-    let FKey = this.input.keyboard.addKey('F')
+    let PKey = this.input.keyboard.addKey('P')
 
-    FKey.on(
+    PKey.on(
       'down',
-      function () {
-        if (this.scale.isFullscreen) {
-          button.setFrame(0)
-          this.scale.stopFullscreen()
-        } else {
-          button.setFrame(1)
-          this.scale.startFullscreen()
-        }
+      () => {
+        this.scene.pause()
       },
       this
     )
 
     /* CAMERA */
     const mainCam = this.cameras.main
-    // mainCam.setZoom(3)
+    mainCam.setZoom(3)
     mainCam.setBounds(0, 0, game.config.width, game.config.height)
     mainCam.startFollow(this.player)
 

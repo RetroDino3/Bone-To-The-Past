@@ -14,7 +14,7 @@ export default class AboutScene extends Phaser.Scene {
       style: {
         fontSize: '40px',
         align: 'center',
-      }
+      },
     })
     this.make.text({
       x: 50,
@@ -23,8 +23,8 @@ export default class AboutScene extends Phaser.Scene {
       style: {
         fontSize: '30px',
         align: 'center',
-        wordWrap: { width: 750, useAdvancedWrap: true }
-      }
+        wordWrap: { width: 750, useAdvancedWrap: true },
+      },
     })
     this.make.text({
       x: 200,
@@ -33,8 +33,8 @@ export default class AboutScene extends Phaser.Scene {
       style: {
         fontSize: '20px',
         align: 'center',
-        wordWrap: { width: 750, useAdvancedWrap: true }
-      }
+        wordWrap: { width: 750, useAdvancedWrap: true },
+      },
     })
 
     const returnText = this.make.text({
@@ -43,11 +43,13 @@ export default class AboutScene extends Phaser.Scene {
       text: 'Return to Start',
       style: {
         fontSize: '20px',
-        align: 'right'
-      }
+        align: 'right',
+      },
     })
-    returnText.setInteractive({useHandCursor: true})
-    returnText.on('pointerdown', () => {this.returnStart()})
+    returnText.setInteractive({ useHandCursor: true })
+    returnText.on('pointerdown', () => {
+      this.returnStart()
+    })
   }
   returnStart() {
     this.scene.switch('TitleScene')
