@@ -127,6 +127,7 @@ export default class PlayScene extends Phaser.Scene {
       this.fallDeath()
     } else if (this.player.body.position.y > 600 && this.lives === 1) {
       this.battle1.stop()
+      this.scene.stop('UIScene')
       this.lives = 3
       this.scene.switch('GameOver')
     }
