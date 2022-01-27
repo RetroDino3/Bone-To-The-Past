@@ -7,12 +7,6 @@ export default class UIScene extends Phaser.Scene {
     super({ key: 'UIScene' })
   }
 
-  init() {
-    function UIScene() {
-      Phaser.Scene.call(this, { key: 'UIScene' })
-    }
-  }
-
   preload() {
     this.load.image('fullScreen', '/static/egg-outline.png')
   }
@@ -51,13 +45,10 @@ export default class UIScene extends Phaser.Scene {
         'pointerup',
         () => {
           this.scene.resume('PlayScene')
-          // this.scene.launch('UIScene')
         },
         this
       )
-      this.events.on('resume', function () {
-        console.log('Playscene resumed')
-      })
+      this.events.on('resume', function () {})
     }
 
     let RKey = this.input.keyboard.addKey('R')
@@ -66,15 +57,12 @@ export default class UIScene extends Phaser.Scene {
       'down',
       () => {
         this.scene.resume('PlayScene')
-        // this.scene.launch('UIScene');
       },
       this
     )
 
-    this.events.on('resume', function () {
-      console.log('PlayScene resume')
-    })
-    //Pause Zoomed in
+    this.events.on('resume', function () {})
+
     let Pause = this.make.text({
       x: 375,
       y: 16,
@@ -130,7 +118,7 @@ export default class UIScene extends Phaser.Scene {
       this
     )
 
-    timedEvent = this.time.delayedCall(600000, onEvent, [], this)
+    timedEvent = this.time.delayedCall(6000, onEvent, [], this)
 
     let healthBar = this.makeBar(140, 100, 0x2ecc71)
     this.setValue(healthBar, 100)
@@ -161,7 +149,4 @@ export default class UIScene extends Phaser.Scene {
   update() {
     Time.setText('Time: ' + timedEvent.getProgress().toString().substr(0, 4))
   }
-}
-function onEvent() {
-  this.scene.launch('GameOver')
 }
