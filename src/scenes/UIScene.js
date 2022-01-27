@@ -18,6 +18,7 @@ export default class UIScene extends Phaser.Scene {
   }
 
   create() {
+    //Health Bar
     this.add.text(16, 16, 'Health:', {
       fontSize: '16px',
       fill: '#000',
@@ -72,7 +73,7 @@ export default class UIScene extends Phaser.Scene {
     this.events.on('Resume', function () {
       console.log('PlayScene Resume')
     })
-
+    //Pause Zoomed in
     let Pause = this.make.text({
       x: 375,
       y: 16,
@@ -127,10 +128,6 @@ export default class UIScene extends Phaser.Scene {
       },
       this
     )
-    // let Pause = this.add
-    //   .image(400 - 24, 16, 'Pause', 0)
-    //   .setOrigin(0, 0)
-    //   .setInteractive()
 
     timedEvent = this.time.delayedCall(600000, onEvent, [], this)
 
