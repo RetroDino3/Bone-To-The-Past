@@ -89,7 +89,7 @@ export default class PlayScene extends Phaser.Scene {
 
     /* CAMERA */
     const mainCam = this.cameras.main
-    mainCam.setZoom(3)
+    mainCam.setZoom(2)
     mainCam.setBounds(0, 0, game.config.width, game.config.height)
     mainCam.startFollow(this.player)
 
