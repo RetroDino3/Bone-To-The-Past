@@ -1,6 +1,5 @@
 import * as Phaser from 'phaser'
-let Time
-let timedEvent
+let time
 
 export default class UIScene extends Phaser.Scene {
   constructor() {
@@ -18,7 +17,7 @@ export default class UIScene extends Phaser.Scene {
       fill: '#000',
     })
     // Time
-    Time = this.make.text({
+    time = this.make.text({
       x: 160,
       y: 16,
       text: 'Time',
@@ -48,7 +47,6 @@ export default class UIScene extends Phaser.Scene {
         },
         this
       )
-      this.events.on('resume', function () {})
     }
 
     let RKey = this.input.keyboard.addKey('R')
@@ -60,8 +58,6 @@ export default class UIScene extends Phaser.Scene {
       },
       this
     )
-
-    this.events.on('resume', function () {})
 
     let Pause = this.make.text({
       x: 375,
@@ -118,8 +114,6 @@ export default class UIScene extends Phaser.Scene {
       this
     )
 
-    timedEvent = this.time.delayedCall(6000, onEvent, [], this)
-
     let healthBar = this.makeBar(140, 100, 0x2ecc71)
     this.setValue(healthBar, 100)
   }
@@ -147,6 +141,6 @@ export default class UIScene extends Phaser.Scene {
   }
 
   update() {
-    Time.setText('Time: ' + timedEvent.getProgress().toString().substr(0, 4))
+    time.setText('Time: ' + Math.trunc(this.time.now / 1000).toString())
   }
 }
