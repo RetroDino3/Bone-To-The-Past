@@ -14,6 +14,9 @@ export default class PlayScene extends Phaser.Scene {
   init() {
     this.cursors = this.input.keyboard.createCursorKeys()
     this.scene.launch('UIScene')
+    function Playscene() {
+      Phaser.Scene.call(this, { key: 'PlayScene' })
+    }
   }
 
   preload() {
@@ -62,27 +65,27 @@ export default class PlayScene extends Phaser.Scene {
 
     /* FULL SCREEN */
 
-    let button = this.add
-      .image(800 - 16, 16, 'fullScreen', 0)
-      .setOrigin(1, 0)
-      .setInteractive()
+    // let button = this.add
+    //   .image(800 - 16, 16, 'fullScreen', 0)
+    //   .setOrigin(1, 0)
+    //   .setInteractive()
 
-    button.on(
-      'pointerup',
-      function () {
-        if (this.scale.isFullscreen) {
-          button.setFrame(0)
+    // button.on(
+    //   'pointerup',
+    //   function () {
+    //     if (this.scale.isFullscreen) {
+    //       button.setFrame(0)
 
-          this.scale.stopFullscreen()
-        } else {
-          button.setFrame(1)
+    //       this.scale.stopFullscreen()
+    //     } else {
+    //       button.setFrame(1)
 
-          this.scale.startFullscreen()
-        }
-      },
-      this
-    )
-    this.make.text({
+    //       this.scale.startFullscreen()
+    //     }
+    //   },
+    //   this
+    // )
+    let Pause = this.make.text({
       x: 375,
       y: 16,
       text: 'Pause',
@@ -92,26 +95,39 @@ export default class PlayScene extends Phaser.Scene {
         fill: '#000',
       },
     })
-    // Pause.setInteractive({ useHandCursor: true })
+    Pause.setInteractive({ useHandCursor: true })
     // Pause.on('pointerdown', () => {
     //   this.scene.pause()
     // })
+    {
+      Pause.on(
+        'pointerup',
+        () => {
+          this.scene.pause()
+          // this.scene.launch('UIScene');
+        },
+        this
+      )
 
-    let FKey = this.input.keyboard.addKey('F')
+      this.events.on('pause', function () {
+        console.log('PlayScene paused')
+      })
+    }
 
-    FKey.on(
+    let PKey = this.input.keyboard.addKey('P')
+
+    PKey.on(
       'down',
-      function () {
-        if (this.scale.isFullscreen) {
-          button.setFrame(0)
-          this.scale.stopFullscreen()
-        } else {
-          button.setFrame(1)
-          this.scale.startFullscreen()
-        }
+      () => {
+        this.scene.pause()
+        // this.scene.launch('UIScene');
       },
       this
     )
+
+    this.events.on('pause', function () {
+      console.log('PlayScene paused')
+    })
 
     /* CAMERA */
     const mainCam = this.cameras.main

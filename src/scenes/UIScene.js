@@ -7,6 +7,12 @@ export default class UIScene extends Phaser.Scene {
     super({ key: 'UIScene' })
   }
 
+  init() {
+    function UIScene() {
+      Phaser.Scene.call(this, { key: 'UIScene' })
+    }
+  }
+
   preload() {
     this.load.image('fullScreen', '/static/egg-outline.png')
   }
@@ -16,7 +22,7 @@ export default class UIScene extends Phaser.Scene {
       fontSize: '16px',
       fill: '#000',
     })
-
+    // Time
     Time = this.make.text({
       x: 160,
       y: 16,
@@ -27,8 +33,8 @@ export default class UIScene extends Phaser.Scene {
         fill: '#000',
       },
     })
-
-    this.make.text({
+    //Resume
+    let Resume = this.make.text({
       x: 275,
       y: 16,
       text: 'Resume',
@@ -37,6 +43,34 @@ export default class UIScene extends Phaser.Scene {
         align: 'center',
         fill: '#000',
       },
+    })
+    Resume.setInteractive({ useHandCursor: true })
+
+    Resume.on(
+      'pointerup',
+      () => {
+        this.scene.resume('PlayScene')
+        // this.scene.launch('UIScene')
+        this.events.on('resume', function () {
+          console.log('Playscene resumed')
+        })
+      },
+      this
+    )
+
+    let RKey = this.input.keyboard.addKey('R')
+
+    RKey.on(
+      'down',
+      () => {
+        this.scene.resume('PlayScene')
+        // this.scene.launch('UIScene');
+      },
+      this
+    )
+
+    this.events.on('Resume', function () {
+      console.log('PlayScene Resume')
     })
 
     let Pause = this.make.text({
@@ -49,11 +83,6 @@ export default class UIScene extends Phaser.Scene {
         fill: '#000',
       },
     })
-
-    // Pause.setInteractive({ useHandCursor: true })
-    // Pause.on('pointerdown', () => {
-    //   this.scene.pause()
-    // })
 
     this.scoreText = this.add.text(475, 16, 'score: 0', {
       fontSize: '16px',
