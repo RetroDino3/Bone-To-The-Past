@@ -75,8 +75,6 @@ export default class PlayScene extends Phaser.Scene {
         },
         this
       )
-
-      this.events.on('pause', function () {})
     }
 
     let PKey = this.input.keyboard.addKey('P')
@@ -88,8 +86,6 @@ export default class PlayScene extends Phaser.Scene {
       },
       this
     )
-
-    this.events.on('pause', function () {})
 
     /* CAMERA */
     const mainCam = this.cameras.main
