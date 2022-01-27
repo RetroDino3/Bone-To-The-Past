@@ -14,9 +14,6 @@ export default class PlayScene extends Phaser.Scene {
   init() {
     this.cursors = this.input.keyboard.createCursorKeys()
     this.scene.launch('UIScene')
-    function Playscene() {
-      Phaser.Scene.call(this, { key: 'PlayScene' })
-    }
   }
 
   preload() {
@@ -26,7 +23,6 @@ export default class PlayScene extends Phaser.Scene {
     this.load.tilemapTiledJSON('tilemap', '/static/stage1.json')
     this.load.atlas('hero', '/static/hero.png', '/static/hero.json')
     this.load.image('fullScreen', '/static/egg-outline.png')
-    this.load.image('chick', '/static/chick.png')
     this.load.audio('battle1', '/static/Battle Theme 1.mp3')
   }
 
@@ -76,14 +72,11 @@ export default class PlayScene extends Phaser.Scene {
         'pointerup',
         () => {
           this.scene.pause()
-          // this.scene.launch('UIScene');
         },
         this
       )
 
-      this.events.on('pause', function () {
-        console.log('PlayScene paused')
-      })
+      this.events.on('pause', function () {})
     }
 
     let PKey = this.input.keyboard.addKey('P')
@@ -96,9 +89,7 @@ export default class PlayScene extends Phaser.Scene {
       this
     )
 
-    this.events.on('pause', function () {
-      console.log('PlayScene paused')
-    })
+    this.events.on('pause', function () {})
 
     /* CAMERA */
     const mainCam = this.cameras.main
