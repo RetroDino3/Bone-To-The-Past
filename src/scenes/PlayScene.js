@@ -58,33 +58,7 @@ export default class PlayScene extends Phaser.Scene {
       isTouchingGround = true
     })
 
-    // this.scoreText = this.add.text(16, 16, 'score: 0', {
-    //   fontSize: '32px',
-    //   fill: '#000',
-    // })
-
-    /* FULL SCREEN */
-
-    // let button = this.add
-    //   .image(800 - 16, 16, 'fullScreen', 0)
-    //   .setOrigin(1, 0)
-    //   .setInteractive()
-
-    // button.on(
-    //   'pointerup',
-    //   function () {
-    //     if (this.scale.isFullscreen) {
-    //       button.setFrame(0)
-
-    //       this.scale.stopFullscreen()
-    //     } else {
-    //       button.setFrame(1)
-
-    //       this.scale.startFullscreen()
-    //     }
-    //   },
-    //   this
-    // )
+    //Pause
     let Pause = this.make.text({
       x: 375,
       y: 16,
@@ -96,9 +70,6 @@ export default class PlayScene extends Phaser.Scene {
       },
     })
     Pause.setInteractive({ useHandCursor: true })
-    // Pause.on('pointerdown', () => {
-    //   this.scene.pause()
-    // })
     {
       Pause.on(
         'pointerup',
@@ -120,7 +91,6 @@ export default class PlayScene extends Phaser.Scene {
       'down',
       () => {
         this.scene.pause()
-        // this.scene.launch('UIScene');
       },
       this
     )

@@ -46,18 +46,19 @@ export default class UIScene extends Phaser.Scene {
       },
     })
     Resume.setInteractive({ useHandCursor: true })
-
-    Resume.on(
-      'pointerup',
-      () => {
-        this.scene.resume('PlayScene')
-        // this.scene.launch('UIScene')
-        this.events.on('resume', function () {
-          console.log('Playscene resumed')
-        })
-      },
-      this
-    )
+    {
+      Resume.on(
+        'pointerup',
+        () => {
+          this.scene.resume('PlayScene')
+          // this.scene.launch('UIScene')
+        },
+        this
+      )
+      this.events.on('resume', function () {
+        console.log('Playscene resumed')
+      })
+    }
 
     let RKey = this.input.keyboard.addKey('R')
 
@@ -70,8 +71,8 @@ export default class UIScene extends Phaser.Scene {
       this
     )
 
-    this.events.on('Resume', function () {
-      console.log('PlayScene Resume')
+    this.events.on('resume', function () {
+      console.log('PlayScene resume')
     })
     //Pause Zoomed in
     let Pause = this.make.text({
