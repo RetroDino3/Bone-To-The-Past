@@ -13,7 +13,7 @@ export default class PlayScene extends Phaser.Scene {
 
   init() {
     this.cursors = this.input.keyboard.createCursorKeys()
-    this.scene.launch('AboutScene')
+    this.scene.launch('UIScene')
   }
 
   preload() {
@@ -92,10 +92,10 @@ export default class PlayScene extends Phaser.Scene {
         fill: '#000',
       },
     })
-    Pause.setInteractive({ useHandCursor: true })
-    Pause.on('pointerdown', () => {
-      this.scene.pause()
-    })
+    // Pause.setInteractive({ useHandCursor: true })
+    // Pause.on('pointerdown', () => {
+    //   this.scene.pause()
+    // })
 
     let FKey = this.input.keyboard.addKey('F')
 

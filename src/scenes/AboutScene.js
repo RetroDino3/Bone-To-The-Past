@@ -1,139 +1,57 @@
 import * as Phaser from 'phaser'
-let Time
-let timedEvent
 
 export default class AboutScene extends Phaser.Scene {
   constructor() {
     super({ key: 'AboutScene' })
   }
 
-  preload() {
-    this.load.image('fullScreen', '/static/egg-outline.png')
-  }
-
+  preload() {}
   create() {
-    this.add.text(16, 16, 'Health:', {
-      fontSize: '16px',
-      fill: '#000',
-    })
-
-    Time = this.make.text({
-      x: 160,
-      y: 16,
-      text: 'Time',
-      style: {
-        fontSize: '16px',
-        align: 'center',
-        fill: '#000',
-      },
-    })
-
     this.make.text({
-      x: 275,
-      y: 16,
-      text: 'Resume',
+      x: 200,
+      y: 50,
+      text: 'Bone To The Past',
       style: {
-        fontSize: '16px',
+        fontSize: '40px',
         align: 'center',
-        fill: '#000',
       },
     })
-
     this.make.text({
-      x: 375,
-      y: 16,
-      text: 'Pause',
+      x: 50,
+      y: 200,
+      text: 'Made by Angel Hernandez, Joel Bascombe, and Juan Mateo',
       style: {
-        fontSize: '16px',
+        fontSize: '30px',
         align: 'center',
-        fill: '#000',
+        wordWrap: { width: 750, useAdvancedWrap: true },
       },
     })
-    // Pause.setInteractive({ useHandCursor: true })
-    // Pause.on('pointerdown', () => {
-    //   this.scene.pause()
-    // })
-
-    this.scoreText = this.add.text(475, 16, 'score: 0', {
-      fontSize: '16px',
-      fill: '#000',
+    this.make.text({
+      x: 200,
+      y: 350,
+      text: 'Fullstack Academy\n\n\nMade with Javascript and Phaser',
+      style: {
+        fontSize: '20px',
+        align: 'center',
+        wordWrap: { width: 750, useAdvancedWrap: true },
+      },
     })
 
-    /* FULL SCREEN */
-
-    let button = this.add
-      .image(800 - 16, 16, 'fullScreen', 0)
-      .setOrigin(1, 0)
-      .setInteractive()
-
-    button.on(
-      'pointerup',
-      function () {
-        if (this.scale.isFullscreen) {
-          button.setFrame(0)
-
-          this.scale.stopFullscreen()
-        } else {
-          button.setFrame(1)
-
-          this.scale.startFullscreen()
-        }
+    const returnText = this.make.text({
+      x: 600,
+      y: 550,
+      text: 'Return to Start',
+      style: {
+        fontSize: '20px',
+        align: 'right',
       },
-      this
-    )
-
-    let FKey = this.input.keyboard.addKey('F')
-
-    FKey.on(
-      'down',
-      function () {
-        if (this.scale.isFullscreen) {
-          button.setFrame(0)
-          this.scale.stopFullscreen()
-        } else {
-          button.setFrame(1)
-          this.scale.startFullscreen()
-        }
-      },
-      this
-    )
-    // let Pause = this.add
-    //   .image(400 - 24, 16, 'Pause', 0)
-    //   .setOrigin(0, 0)
-    //   .setInteractive()
-
-    timedEvent = this.time.delayedCall(600000, onEvent, [], this)
-
-    let healthBar = this.makeBar(140, 100, 0x2ecc71)
-    this.setValue(healthBar, 100)
+    })
+    returnText.setInteractive({ useHandCursor: true })
+    returnText.on('pointerdown', () => {
+      this.returnStart()
+    })
   }
-  //
-  makeBar(x, y, color) {
-    //draw the bar
-    let bar = this.add.graphics()
-
-    //color the bar
-    bar.fillStyle(color, 1)
-
-    //fill the bar with a rectangle
-    bar.fillRect(27, 16, 65, 15)
-
-    //position the bar
-    bar.x = 55
-    bar.y = 0
-
-    //return the bar
-    return bar
+  returnStart() {
+    this.scene.switch('TitleScene')
   }
-  setValue(bar, percentage) {
-    //scale the bar
-    bar.scaleX = percentage / 100
-  }
-
-  update() {
-    Time.setText('Time: ' + timedEvent.getProgress().toString().substr(0, 4))
-  }
-}
-function onEvent() {
-  this.scene.launch('GameOver')
 }

@@ -4,6 +4,7 @@ import TitleScene from './src/scenes/TitleScene'
 import GameOver from './src/scenes/GameOver'
 import VictoryScene from './src/scenes/VictoryScene'
 import AboutScene from './src/scenes/AboutScene'
+import UIScene from './src/scenes/UIScene'
 
 const config = {
   name: 'app',
@@ -16,7 +17,7 @@ const config = {
       debug: true,
     },
   },
-  scene: [PlayScene, GameOver, VictoryScene, AboutScene],
+  scene: [TitleScene, PlayScene, GameOver, VictoryScene, UIScene, AboutScene],
 }
 
 window.game = new Phaser.Game(config)

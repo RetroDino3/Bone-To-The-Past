@@ -1,8 +1,8 @@
 import * as Phaser from 'phaser'
-import VictoryScene from './VictoryScene'
+let Time
 let timedEvent
 
-export default class UIScene extends Phaser.Scenes {
+export default class UIScene extends Phaser.Scene {
   constructor() {
     super({ key: 'UIScene' })
   }
@@ -12,10 +12,54 @@ export default class UIScene extends Phaser.Scenes {
   }
 
   create() {
-    this.scoreText = this.add.text(16, 16, 'score: 0', {
-      fontSize: '32px',
+    this.add.text(16, 16, 'Health:', {
+      fontSize: '16px',
       fill: '#000',
     })
+
+    Time = this.make.text({
+      x: 160,
+      y: 16,
+      text: 'Time',
+      style: {
+        fontSize: '16px',
+        align: 'center',
+        fill: '#000',
+      },
+    })
+
+    this.make.text({
+      x: 275,
+      y: 16,
+      text: 'Resume',
+      style: {
+        fontSize: '16px',
+        align: 'center',
+        fill: '#000',
+      },
+    })
+
+    let Pause = this.make.text({
+      x: 375,
+      y: 16,
+      text: 'Pause',
+      style: {
+        fontSize: '16px',
+        align: 'center',
+        fill: '#000',
+      },
+    })
+
+    // Pause.setInteractive({ useHandCursor: true })
+    // Pause.on('pointerdown', () => {
+    //   this.scene.pause()
+    // })
+
+    this.scoreText = this.add.text(475, 16, 'score: 0', {
+      fontSize: '16px',
+      fill: '#000',
+    })
+
     /* FULL SCREEN */
 
     let button = this.add
@@ -59,45 +103,38 @@ export default class UIScene extends Phaser.Scenes {
     //   .setOrigin(0, 0)
     //   .setInteractive()
 
-    this.make.text({
-      x: 450,
-      y: 16,
-      text: 'Pause',
-      style: {
-        fontSize: '16px',
-        align: 'center',
-        fill: '#000',
-      },
-    })
-    this.make.text({
-      x: 250,
-      y: 16,
-      text: 'Resume',
-      style: {
-        fontSize: '16px',
-        align: 'center',
-        fill: '#000',
-      },
-    })
-    let Time = this.make.text({
-      x: 550,
-      y: 16,
-      text: 'Time',
-      style: {
-        fontSize: '16px',
-        align: 'center',
-        fill: '#000',
-      },
-    })
-    timedEvent = this.time.delayedCall(60000, onEvent, [], this)
+    timedEvent = this.time.delayedCall(600000, onEvent, [], this)
+
+    let healthBar = this.makeBar(140, 100, 0x2ecc71)
+    this.setValue(healthBar, 100)
   }
   //
-}
+  makeBar(x, y, color) {
+    //draw the bar
+    let bar = this.add.graphics()
 
-function update() {
-  Time.setText('Time: ' + timedEvent.getProgress().toString().substr(0, 4))
-}
+    //color the bar
+    bar.fillStyle(color, 1)
 
+    //fill the bar with a rectangle
+    bar.fillRect(27, 16, 65, 15)
+
+    //position the bar
+    bar.x = 55
+    bar.y = 0
+
+    //return the bar
+    return bar
+  }
+  setValue(bar, percentage) {
+    //scale the bar
+    bar.scaleX = percentage / 100
+  }
+
+  update() {
+    Time.setText('Time: ' + timedEvent.getProgress().toString().substr(0, 4))
+  }
+}
 function onEvent() {
-  this.scene.launch('VictoryScene')
+  this.scene.launch('GameOver')
 }
