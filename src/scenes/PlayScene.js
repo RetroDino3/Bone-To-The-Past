@@ -1,7 +1,16 @@
 import * as Phaser from 'phaser'
 
 let isTouchingGround = true
+
 export let lives = 3
+
+export let timer = 0
+
+const incrementTimer = () => {
+  timer += 1
+}
+
+setInterval(incrementTimer, 1000)
 
 export default class PlayScene extends Phaser.Scene {
   constructor() {
@@ -126,6 +135,7 @@ export default class PlayScene extends Phaser.Scene {
     if (this.player.body.position.y > 600 && lives > 1) {
       this.fallDeath()
     } else if (this.player.body.position.y > 600 && lives === 1) {
+      timer = 0
       this.battle1.stop()
       this.scene.stop('UIScene')
       lives = 3
@@ -161,8 +171,9 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   fallDeath() {
-      this.battle1.stop()
-      this.scene.restart()
-      lives--
+    timer = 0
+    this.battle1.stop()
+    this.scene.restart()
+    lives--
   }
 }

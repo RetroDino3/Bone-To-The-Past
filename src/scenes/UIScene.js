@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser'
-import { lives } from './PlayScene'
+import { lives, timer } from './PlayScene'
 let time
 
 export default class UIScene extends Phaser.Scene {
@@ -153,6 +153,6 @@ export default class UIScene extends Phaser.Scene {
   }
 
   update() {
-    time.setText('Time: ' + Math.trunc(this.time.now / 1000).toString())
+    time.setText('Time: ' + timer.toString())
   }
 }
