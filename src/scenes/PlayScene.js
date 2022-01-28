@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser'
+import { paused } from './UIScene'
 
 let isTouchingGround = true
 
@@ -7,7 +8,9 @@ export let lives = 3
 export let timer = 0
 
 const incrementTimer = () => {
-  timer += 1
+  if (paused === false) {
+    timer += 1
+  }
 }
 
 setInterval(incrementTimer, 1000)

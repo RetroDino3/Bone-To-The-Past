@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser'
 import { lives, timer } from './PlayScene'
 let time
+export let paused = false
 
 export default class UIScene extends Phaser.Scene {
   constructor() {
@@ -154,5 +155,6 @@ export default class UIScene extends Phaser.Scene {
 
   update() {
     time.setText('Time: ' + timer.toString())
+    paused = this.scene.isPaused('PlayScene')
   }
 }
