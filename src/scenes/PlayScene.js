@@ -24,6 +24,7 @@ export default class PlayScene extends Phaser.Scene {
   init() {
     this.cursors = this.input.keyboard.createCursorKeys()
     this.scene.launch('UIScene')
+    timer = 0
   }
 
   preload() {
@@ -135,7 +136,6 @@ export default class PlayScene extends Phaser.Scene {
     if (this.player.body.position.y > 600 && lives > 1) {
       this.fallDeath()
     } else if (this.player.body.position.y > 600 && lives === 1) {
-      timer = 0
       this.battle1.stop()
       this.scene.stop('UIScene')
       lives = 3
