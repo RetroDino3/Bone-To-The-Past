@@ -69,9 +69,9 @@ export default class PlayScene extends Phaser.Scene {
     })
 
     //Pause
-    let PKey = this.input.keyboard.addKey('P')
+    let pKey = this.input.keyboard.addKey('P')
 
-    PKey.on(
+    pKey.on(
       'down',
       () => {
         this.scene.pause()

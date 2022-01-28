@@ -30,7 +30,7 @@ export default class UIScene extends Phaser.Scene {
       },
     })
     //Resume
-    let Resume = this.make.text({
+    let resumeText = this.make.text({
       x: 275,
       y: 16,
       text: 'Resume',
@@ -51,7 +51,7 @@ export default class UIScene extends Phaser.Scene {
         fill: '#000'
       }
     })
-    Resume.setInteractive({ useHandCursor: true }).on(
+    resumeText.setInteractive({ useHandCursor: true }).on(
       'pointerup',
       () => {
         this.scene.resume('PlayScene')
@@ -59,9 +59,9 @@ export default class UIScene extends Phaser.Scene {
       this
     )
 
-    let RKey = this.input.keyboard.addKey('R')
+    let rKey = this.input.keyboard.addKey('R')
 
-    RKey.on(
+    rKey.on(
       'down',
       () => {
         this.scene.resume('PlayScene')
@@ -69,7 +69,7 @@ export default class UIScene extends Phaser.Scene {
       this
     )
 
-    let Pause = this.make.text({
+    let pauseText = this.make.text({
       x: 375,
       y: 16,
       text: 'Pause',
@@ -79,7 +79,7 @@ export default class UIScene extends Phaser.Scene {
         fill: '#000',
       },
     })
-    Pause.setInteractive({ useHandCursor: true }).on(
+    pauseText.setInteractive({ useHandCursor: true }).on(
       'pointerup',
       () => {
         this.scene.pause('PlayScene')
@@ -115,9 +115,9 @@ export default class UIScene extends Phaser.Scene {
       this
     )
 
-    let FKey = this.input.keyboard.addKey('F')
+    let fKey = this.input.keyboard.addKey('F')
 
-    FKey.on(
+    fKey.on(
       'down',
       function () {
         if (this.scale.isFullscreen) {
