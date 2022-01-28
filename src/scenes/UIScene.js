@@ -1,5 +1,7 @@
 import * as Phaser from 'phaser'
+import { lives, timer } from './PlayScene'
 let time
+export let paused = false
 
 export default class UIScene extends Phaser.Scene {
   constructor() {
@@ -28,7 +30,7 @@ export default class UIScene extends Phaser.Scene {
       },
     })
     //Resume
-    let Resume = this.make.text({
+    let resumeText = this.make.text({
       x: 275,
       y: 16,
       text: 'Resume',
@@ -38,20 +40,28 @@ export default class UIScene extends Phaser.Scene {
         fill: '#000',
       },
     })
-    Resume.setInteractive({ useHandCursor: true })
-    {
-      Resume.on(
-        'pointerup',
-        () => {
-          this.scene.resume('PlayScene')
-        },
-        this
-      )
-    }
+    //Lives
+    this.make.text({
+      x: 16,
+      y: 40,
+      text: `Lives: ${lives}`,
+      style: {
+        fontSize: '16px',
+        align: 'center',
+        fill: '#000'
+      }
+    })
+    resumeText.setInteractive({ useHandCursor: true }).on(
+      'pointerup',
+      () => {
+        this.scene.resume('PlayScene')
+      },
+      this
+    )
 
-    let RKey = this.input.keyboard.addKey('R')
+    let rKey = this.input.keyboard.addKey('R')
 
-    RKey.on(
+    rKey.on(
       'down',
       () => {
         this.scene.resume('PlayScene')
@@ -59,7 +69,7 @@ export default class UIScene extends Phaser.Scene {
       this
     )
 
-    let Pause = this.make.text({
+    let pauseText = this.make.text({
       x: 375,
       y: 16,
       text: 'Pause',
@@ -69,6 +79,13 @@ export default class UIScene extends Phaser.Scene {
         fill: '#000',
       },
     })
+    pauseText.setInteractive({ useHandCursor: true }).on(
+      'pointerup',
+      () => {
+        this.scene.pause('PlayScene')
+      },
+      this
+    )
 
     this.scoreText = this.add.text(475, 16, 'score: 0', {
       fontSize: '16px',
@@ -98,9 +115,9 @@ export default class UIScene extends Phaser.Scene {
       this
     )
 
-    let FKey = this.input.keyboard.addKey('F')
+    let fKey = this.input.keyboard.addKey('F')
 
-    FKey.on(
+    fKey.on(
       'down',
       function () {
         if (this.scale.isFullscreen) {
@@ -141,6 +158,7 @@ export default class UIScene extends Phaser.Scene {
   }
 
   update() {
-    time.setText('Time: ' + Math.trunc(this.time.now / 1000).toString())
+    time.setText('Time: ' + timer.toString())
+    paused = this.scene.isPaused('PlayScene')
   }
 }

@@ -1,6 +1,19 @@
 import * as Phaser from 'phaser'
+import { paused } from './UIScene'
 
 let isTouchingGround = true
+
+export let lives = 3
+
+export let timer = 0
+
+const incrementTimer = () => {
+  if (paused === false) {
+    timer += 1
+  }
+}
+
+setInterval(incrementTimer, 1000)
 
 export default class PlayScene extends Phaser.Scene {
   constructor() {
@@ -9,12 +22,12 @@ export default class PlayScene extends Phaser.Scene {
     this.score = 0
     this.scoreText = null
     this.battle1 = null
-    this.lives = 3
   }
 
   init() {
     this.cursors = this.input.keyboard.createCursorKeys()
     this.scene.launch('UIScene')
+    timer = 0
   }
 
   preload() {
@@ -23,7 +36,6 @@ export default class PlayScene extends Phaser.Scene {
     this.load.image('tiles', '/static/greensides.png')
     this.load.tilemapTiledJSON('tilemap', '/static/stage1.json')
     this.load.atlas('hero', '/static/hero.png', '/static/hero.json')
-    this.load.image('fullScreen', '/static/egg-outline.png')
     this.load.audio('battle1', '/static/Battle Theme 1.mp3')
   }
 
@@ -57,30 +69,9 @@ export default class PlayScene extends Phaser.Scene {
     })
 
     //Pause
-    let Pause = this.make.text({
-      x: 375,
-      y: 16,
-      text: 'Pause',
-      style: {
-        fontSize: '16px',
-        align: 'center',
-        fill: '#000',
-      },
-    })
-    Pause.setInteractive({ useHandCursor: true })
-    {
-      Pause.on(
-        'pointerup',
-        () => {
-          this.scene.pause()
-        },
-        this
-      )
-    }
+    let pKey = this.input.keyboard.addKey('P')
 
-    let PKey = this.input.keyboard.addKey('P')
-
-    PKey.on(
+    pKey.on(
       'down',
       () => {
         this.scene.pause()
@@ -90,7 +81,7 @@ export default class PlayScene extends Phaser.Scene {
 
     /* CAMERA */
     const mainCam = this.cameras.main
-    mainCam.setZoom(3)
+    mainCam.setZoom(2)
     mainCam.setBounds(0, 0, game.config.width, game.config.height)
     mainCam.startFollow(this.player)
 
@@ -124,11 +115,12 @@ export default class PlayScene extends Phaser.Scene {
       isTouchingGround = false
     }
 
-    if (this.player.body.position.y > 600 && this.lives > 1) {
+    if (this.player.body.position.y > 600 && lives > 1) {
       this.fallDeath()
-    } else if (this.player.body.position.y > 600 && this.lives === 1) {
+    } else if (this.player.body.position.y > 600 && lives === 1) {
       this.battle1.stop()
-      this.lives = 3
+      this.scene.stop('UIScene')
+      lives = 3
       this.scene.switch('GameOver')
     }
   }
@@ -161,8 +153,9 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   fallDeath() {
-      this.battle1.stop()
-      this.scene.restart()
-      this.lives--
+    timer = 0
+    this.battle1.stop()
+    this.scene.restart()
+    lives--
   }
 }
