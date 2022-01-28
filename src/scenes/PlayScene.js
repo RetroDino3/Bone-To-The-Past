@@ -69,27 +69,6 @@ export default class PlayScene extends Phaser.Scene {
     })
 
     //Pause
-    let Pause = this.make.text({
-      x: 375,
-      y: 16,
-      text: 'Pause',
-      style: {
-        fontSize: '16px',
-        align: 'center',
-        fill: '#000',
-      },
-    })
-    Pause.setInteractive({ useHandCursor: true })
-    {
-      Pause.on(
-        'pointerup',
-        () => {
-          this.scene.pause()
-        },
-        this
-      )
-    }
-
     let PKey = this.input.keyboard.addKey('P')
 
     PKey.on(

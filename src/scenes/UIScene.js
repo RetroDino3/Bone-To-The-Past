@@ -51,16 +51,13 @@ export default class UIScene extends Phaser.Scene {
         fill: '#000'
       }
     })
-    Resume.setInteractive({ useHandCursor: true })
-    {
-      Resume.on(
-        'pointerup',
-        () => {
-          this.scene.resume('PlayScene')
-        },
-        this
-      )
-    }
+    Resume.setInteractive({ useHandCursor: true }).on(
+      'pointerup',
+      () => {
+        this.scene.resume('PlayScene')
+      },
+      this
+    )
 
     let RKey = this.input.keyboard.addKey('R')
 
@@ -82,6 +79,13 @@ export default class UIScene extends Phaser.Scene {
         fill: '#000',
       },
     })
+    Pause.setInteractive({ useHandCursor: true }).on(
+      'pointerup',
+      () => {
+        this.scene.pause('PlayScene')
+      },
+      this
+    )
 
     this.scoreText = this.add.text(475, 16, 'score: 0', {
       fontSize: '16px',
