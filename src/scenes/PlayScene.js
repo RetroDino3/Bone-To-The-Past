@@ -21,6 +21,7 @@ export default class PlayScene extends Phaser.Scene {
     this.load.image('tiles', '/static/greensides.png')
     this.load.tilemapTiledJSON('tilemap', '/static/stage1.json')
     this.load.atlas('hero', '/static/hero.png', '/static/hero.json')
+    this.load.atlas('dino1', '/static/dino1.png', '/static/dino1.json')
     this.load.image('fullScreen', '/static/egg-outline.png')
     this.load.audio('battle1', '/static/Battle Theme 1.mp3')
   }
@@ -28,6 +29,7 @@ export default class PlayScene extends Phaser.Scene {
   create() {
     /* ANIMATIONS*/
     this.createHeroAnimations()
+    this.createDinoAnimations()
 
     /* TILES */
     const map = this.make.tilemap({ key: 'tilemap' })
@@ -49,10 +51,18 @@ export default class PlayScene extends Phaser.Scene {
       .play('hero-idle')
       .setFixedRotation()
 
+    /* DINO1 */
+    this.dino1 = this.matter.add
+      .sprite(125, 548, 'dino1')
+      .play('dino1-idle')
+      .setFixedRotation()
+
     // Detect collision with ground
-    this.matter.world.on('collisionactive', (player, platforms) => {
+    this.matter.world.on('collisionstart', (bodyA, bodyB) => {
       isTouchingGround = true
     })
+
+    this.matter.world.setBounds(0, 0, game.config.width, game.config.height)
 
     this.scoreText = this.add.text(16, 16, 'score: 0', {
       fontSize: '32px',
@@ -60,7 +70,6 @@ export default class PlayScene extends Phaser.Scene {
     })
 
     /* FULL SCREEN */
-
     let button = this.add
       .image(800 - 16, 16, 'fullScreen', 0)
       .setOrigin(1, 0)
@@ -100,10 +109,11 @@ export default class PlayScene extends Phaser.Scene {
 
     /* CAMERA */
     const mainCam = this.cameras.main
-    // mainCam.setZoom(3)
+    mainCam.setZoom(2)
     mainCam.setBounds(0, 0, game.config.width, game.config.height)
     mainCam.startFollow(this.player)
 
+    /* AUDIO */
     this.battle1 = this.sound.add('battle1', { loop: true, volume: 0.2 })
     this.battle1.play()
   }
@@ -112,6 +122,7 @@ export default class PlayScene extends Phaser.Scene {
     const { left, right, up, down, space, shift } = this.cursors
     const speed = 1
 
+    /* PLAYER CONTROLS */
     if (left.isDown) {
       this.player.flipX = true
       this.player.setVelocityX(-speed)
@@ -132,6 +143,26 @@ export default class PlayScene extends Phaser.Scene {
     if (Phaser.Input.Keyboard.JustDown(up) && isTouchingGround) {
       this.player.setVelocityY(-speed * 7)
       isTouchingGround = false
+    }
+
+    /* DINO MOVEMENTS */
+    console.log("Dinosaur's velocity: ", this.dino1.body.velocity.x)
+
+    if (this.dino1.body.velocity.x < 0) {
+      this.dino1.flipX = true
+      this.dino1.anims.play('dino1-walk', true)
+    } else if (this.dino1.body.velocity.x > 0) {
+      this.dino1.flipX = false
+      this.dino1.anims.play('dino1-walk', true)
+    } else if (this.dino1.body.velocity.x === 0) {
+      this.dino1.flipX = true
+      this.dino1.setVelocityX(-speed * 0.75)
+      this.dino1.anims.play('dino1-walk', true)
+      if (this.dino1.body.velocity.x === 0) {
+        this.dino1.flipX = false
+        this.dino1.setVelocityX(speed * 0.75)
+        this.dino1.anims.play('dino1-walk', true)
+      }
     }
   }
 
@@ -159,6 +190,24 @@ export default class PlayScene extends Phaser.Scene {
     this.anims.create({
       key: 'hero-fall',
       frames: [{ key: 'hero', frame: 'hero-fall.png' }],
+    })
+  }
+
+  createDinoAnimations() {
+    this.anims.create({
+      key: 'dino1-idle',
+      frames: [{ key: 'dino1', frame: 'bone_dino-0.png' }],
+    })
+    this.anims.create({
+      key: 'dino1-walk',
+      frameRate: 5,
+      frames: this.anims.generateFrameNames('dino1', {
+        start: 0,
+        end: 3,
+        prefix: 'bone_dino-',
+        suffix: '.png',
+      }),
+      repeat: -1,
     })
   }
 }
