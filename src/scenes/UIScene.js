@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser'
+import { lives } from './PlayScene'
 let time
 
 export default class UIScene extends Phaser.Scene {
@@ -37,6 +38,17 @@ export default class UIScene extends Phaser.Scene {
         align: 'center',
         fill: '#000',
       },
+    })
+    //Lives
+    this.make.text({
+      x: 16,
+      y: 40,
+      text: `Lives: ${lives}`,
+      style: {
+        fontSize: '16px',
+        align: 'center',
+        fill: '#000'
+      }
     })
     Resume.setInteractive({ useHandCursor: true })
     {

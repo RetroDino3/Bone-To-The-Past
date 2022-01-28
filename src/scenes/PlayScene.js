@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser'
 
 let isTouchingGround = true
+export let lives = 3
 
 export default class PlayScene extends Phaser.Scene {
   constructor() {
@@ -9,7 +10,6 @@ export default class PlayScene extends Phaser.Scene {
     this.score = 0
     this.scoreText = null
     this.battle1 = null
-    this.lives = 3
   }
 
   init() {
@@ -123,12 +123,12 @@ export default class PlayScene extends Phaser.Scene {
       isTouchingGround = false
     }
 
-    if (this.player.body.position.y > 600 && this.lives > 1) {
+    if (this.player.body.position.y > 600 && lives > 1) {
       this.fallDeath()
-    } else if (this.player.body.position.y > 600 && this.lives === 1) {
+    } else if (this.player.body.position.y > 600 && lives === 1) {
       this.battle1.stop()
       this.scene.stop('UIScene')
-      this.lives = 3
+      lives = 3
       this.scene.switch('GameOver')
     }
   }
@@ -163,6 +163,6 @@ export default class PlayScene extends Phaser.Scene {
   fallDeath() {
       this.battle1.stop()
       this.scene.restart()
-      this.lives--
+      lives--
   }
 }
