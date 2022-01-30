@@ -60,6 +60,5 @@ module.exports = {
     hot: true,
     port: process.env.PORT || 3000,
     compress: true,
-    allowedHosts: 'auto' | 'all' | Array[string],
   },
 }
