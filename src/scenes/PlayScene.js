@@ -1,7 +1,8 @@
 import * as Phaser from 'phaser'
+import PlayerController from '../states/PlayerController'
+import ObstaclesController from '../states/ObstaclesController'
+import DinosaurController from '../states/DinosaurController'
 import { paused } from './UIScene'
-
-let isTouchingGround = true
 
 export let lives = 3
 
@@ -22,10 +23,14 @@ export default class PlayScene extends Phaser.Scene {
     this.score = 0
     this.scoreText = null
     this.battle1 = null
+    this.playerController = null
+    this.obstacles = null
   }
 
   init() {
     this.cursors = this.input.keyboard.createCursorKeys()
+    this.obstacles = new ObstaclesController()
+    this.dinosaurs = []
     this.scene.launch('UIScene')
     timer = 0
   }
@@ -36,16 +41,17 @@ export default class PlayScene extends Phaser.Scene {
     this.load.image('tiles', '/static/greensides.png')
     this.load.tilemapTiledJSON('tilemap', '/static/stage1.json')
     this.load.atlas('hero', '/static/hero.png', '/static/hero.json')
+    this.load.atlas('dino-horse', '/static/dino1.png', '/static/dino1.json')
+    this.load.image('fullScreen', '/static/egg-outline.png')
     this.load.audio('battle1', '/static/Battle Theme 1.mp3')
   }
 
   create() {
-    /* ANIMATIONS*/
-    this.createHeroAnimations()
-
     /* TILES */
     const map = this.make.tilemap({ key: 'tilemap' })
+
     const tileset = map.addTilesetImage('greensides', 'tiles')
+
     map.createLayer('sky', tileset)
     const platforms = map.createLayer('platforms', tileset)
     const trees = map.createLayer('trees', tileset)
@@ -57,15 +63,38 @@ export default class PlayScene extends Phaser.Scene {
     this.matter.world.convertTilemapLayer(platforms)
     this.matter.world.convertTilemapLayer(trees)
 
-    /* PLAYER */
-    this.player = this.matter.add
-      .sprite(10, 548, 'hero')
-      .play('hero-idle')
-      .setFixedRotation()
+    this.matter.world.setBounds(0, 0, game.config.width, game.config.height)
 
-    // Detect collision with ground
-    this.matter.world.on('collisionactive', (player, platforms) => {
-      isTouchingGround = true
+    const objectsLayer = map.getObjectLayer('objects')
+
+    objectsLayer.objects.forEach((objData) => {
+      const { x = 0, y = 0, name, width = 0, height = 0 } = objData
+
+      switch (name) {
+        case 'hero-spawn': {
+          this.player = this.matter.add
+            .sprite(x + width * 0.5, y, 'hero')
+            .setFixedRotation()
+
+          this.playerController = new PlayerController(
+            this,
+            this.player,
+            this.cursors,
+            this.obstacles
+          )
+          break
+        }
+
+        case 'dinoHorse-spawn': {
+          const dinoHorse = this.matter.add
+            .sprite(x, y, 'dino-horse')
+            .setFixedRotation()
+
+          this.dinosaurs.push(new DinosaurController(this, dinoHorse))
+          this.obstacles.add('dino-horse', dinoHorse.body)
+          break
+        }
+      }
     })
 
     //Pause
@@ -81,7 +110,7 @@ export default class PlayScene extends Phaser.Scene {
 
     /* CAMERA */
     const mainCam = this.cameras.main
-    mainCam.setZoom(1)
+    mainCam.setZoom(2)
     mainCam.setBounds(0, 0, game.config.width, game.config.height)
     mainCam.startFollow(this.player)
 
@@ -89,30 +118,9 @@ export default class PlayScene extends Phaser.Scene {
     this.battle1.play()
   }
 
-  update() {
-    const { left, right, up, down, space, shift } = this.cursors
-    const speed = 1
-
-    if (left.isDown) {
-      this.player.flipX = true
-      this.player.setVelocityX(-speed)
-      this.player.anims.play('hero-walk', true)
-    } else if (right.isDown) {
-      this.player.flipX = false
-      this.player.setVelocityX(speed)
-      this.player.anims.play('hero-walk', true)
-    } else {
-      this.player.setVelocityX(0)
-      this.player.anims.play('hero-idle', true)
-    }
-    if (this.player.body.velocity.y < -1) {
-      this.player.anims.play('hero-leap', true)
-    } else if (this.player.body.velocity.y > 1) {
-      this.player.anims.play('hero-fall', true)
-    }
-    if (Phaser.Input.Keyboard.JustDown(up) && isTouchingGround) {
-      this.player.setVelocityY(-speed * 7)
-      isTouchingGround = false
+  update(t, dt) {
+    if (this.playerController) {
+      this.playerController.update(dt)
     }
 
     if (this.player.body.position.y > 600 && lives > 1) {
@@ -123,33 +131,8 @@ export default class PlayScene extends Phaser.Scene {
       lives = 3
       this.scene.switch('GameOver')
     }
-  }
 
-  /* METHODS */
-  createHeroAnimations() {
-    this.anims.create({
-      key: 'hero-idle',
-      frames: [{ key: 'hero', frame: 'hero-walk-04.png' }],
-    })
-    this.anims.create({
-      key: 'hero-walk',
-      frameRate: 5,
-      frames: this.anims.generateFrameNames('hero', {
-        start: 1,
-        end: 5,
-        prefix: 'hero-walk-0',
-        suffix: '.png',
-      }),
-      repeat: -1,
-    })
-    this.anims.create({
-      key: 'hero-leap',
-      frames: [{ key: 'hero', frame: 'hero-leap.png' }],
-    })
-    this.anims.create({
-      key: 'hero-fall',
-      frames: [{ key: 'hero', frame: 'hero-fall.png' }],
-    })
+    this.dinosaurs.forEach((dinosaur) => dinosaur.update(dt))
   }
 
   fallDeath() {
