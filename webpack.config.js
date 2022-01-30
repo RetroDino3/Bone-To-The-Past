@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 
 module.exports = {
-  entry: './index',
+  entry: './build/index.html',
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'build'),
