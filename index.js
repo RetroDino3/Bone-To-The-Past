@@ -13,10 +13,10 @@ const config = {
   physics: {
     default: 'matter',
     matter: {
-      debug: true,
+      debug: false,
     },
   },
-  scene: [PlayScene, GameOver, VictoryScene, AboutScene],
+  scene: [TitleScene, PlayScene, GameOver, VictoryScene, AboutScene],
 }
 
 window.game = new Phaser.Game(config)
