@@ -62,4 +62,7 @@ module.exports = {
       }),
     ],
   },
+  devServer: {
+    allowedHosts: ['bone-to-the-past.herokuapp.com'],
+  },
 }
