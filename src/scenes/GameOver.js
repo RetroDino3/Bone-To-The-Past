@@ -37,6 +37,7 @@ export default class GameOver extends Phaser.Scene {
   }
   toTitle() {
     this.endBGM.stop()
-    this.scene.switch('TitleScene')
+    this.scene.stop()
+    this.scene.start('TitleScene')
   }
 }

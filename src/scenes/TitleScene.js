@@ -53,7 +53,8 @@ export default class TitleScene extends Phaser.Scene {
   }
   clickTitle() {
     this.titleBGM.stop()
-    this.scene.switch('PlayScene')
+    this.scene.stop()
+    this.scene.start('PlayScene')
   }
 
   clickAbout() {

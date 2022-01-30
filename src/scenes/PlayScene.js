@@ -2,6 +2,19 @@ import * as Phaser from 'phaser'
 import PlayerController from '../states/PlayerController'
 import ObstaclesController from '../states/ObstaclesController'
 import DinosaurController from '../states/DinosaurController'
+import { paused } from './UIScene'
+
+export let lives = 3
+
+export let timer = 0
+
+const incrementTimer = () => {
+  if (paused === false) {
+    timer += 1
+  }
+}
+
+setInterval(incrementTimer, 1000)
 
 export default class PlayScene extends Phaser.Scene {
   constructor() {
@@ -18,6 +31,8 @@ export default class PlayScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys()
     this.obstacles = new ObstaclesController()
     this.dinosaurs = []
+    this.scene.launch('UIScene')
+    timer = 0
   }
 
   preload() {
@@ -82,58 +97,24 @@ export default class PlayScene extends Phaser.Scene {
       }
     })
 
-    /* UI ELEMENTS*/
-    this.scoreText = this.add.text(16, 16, 'score: 0', {
-      fontSize: '32px',
-      fill: '#000',
-    })
+    //Pause
+    let pKey = this.input.keyboard.addKey('P')
 
-    /* FULL SCREEN */
-    let button = this.add
-      .image(800 - 16, 16, 'fullScreen', 0)
-      .setOrigin(1, 0)
-      .setInteractive()
-
-    button.on(
-      'pointerup',
-      function () {
-        if (this.scale.isFullscreen) {
-          button.setFrame(0)
-
-          this.scale.stopFullscreen()
-        } else {
-          button.setFrame(1)
-
-          this.scale.startFullscreen()
-        }
-      },
-      this
-    )
-
-    let FKey = this.input.keyboard.addKey('F')
-
-    FKey.on(
+    pKey.on(
       'down',
-      function () {
-        if (this.scale.isFullscreen) {
-          button.setFrame(0)
-          this.scale.stopFullscreen()
-        } else {
-          button.setFrame(1)
-          this.scale.startFullscreen()
-        }
+      () => {
+        this.scene.pause()
       },
       this
     )
 
     /* CAMERA */
     const mainCam = this.cameras.main
-    // mainCam.setZoom(1.2)
+    mainCam.setZoom(2)
     mainCam.setBounds(0, 0, game.config.width, game.config.height)
     mainCam.startFollow(this.player)
 
-    /* AUDIO */
-    this.battle1 = this.sound.add('battle1', { loop: true, volume: 0.2 })
+    this.battle1 = this.sound.add('battle1', { loop: true, volume: 0.15 })
     this.battle1.play()
   }
 
@@ -142,6 +123,22 @@ export default class PlayScene extends Phaser.Scene {
       this.playerController.update(dt)
     }
 
+    if (this.player.body.position.y > 600 && lives > 1) {
+      this.fallDeath()
+    } else if (this.player.body.position.y > 600 && lives === 1) {
+      this.battle1.stop()
+      this.scene.stop('UIScene')
+      lives = 3
+      this.scene.switch('GameOver')
+    }
+
     this.dinosaurs.forEach((dinosaur) => dinosaur.update(dt))
+  }
+
+  fallDeath() {
+    timer = 0
+    this.battle1.stop()
+    this.scene.restart()
+    lives--
   }
 }
