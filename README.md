@@ -8,7 +8,7 @@ Embark on a treacherous journey into the distant past. You are a contemporary pe
 - fork and clone this repo
 - in terminal, navigate to directory `/Bone-To-The-Past`
 - enter `npm install` in terminal
-- enter `npm start`
+- enter `npm start:dev`
 - open browser of choice, navigate to `localhost:3000`
 
 **Gameplay**
