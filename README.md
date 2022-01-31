@@ -1,12 +1,12 @@
 # Bone-To-The-Past
-Embark on a treacherous journey into the distant past. You are a contemporary person with the ability to time travel, so why not travel to the age of dinosaurs to scoop up precious bones? Discover new lands and animals you never thought you'd see while you cheat your way to fame and glory. Defeat dinosaurs to collect all the bones in the game for 100% completion.
+Embark on a treacherous journey into the distant past. You are a contemporary person with the ability to time travel so why not travel to the age of dinosaurs to scoop up precious bones? Discover new lands and animals you never thought you'd see while you cheat your way to fame and glory. Defeat dinosaurs to collect all the bones in the game for 100% completion.
 
 ## Usage
 [Visit Bone To The Past here](https://bone-to-the-past.herokuapp.com/), on Heroku.
 
 **Install locally**
 - fork and clone this repo
-- in terminal, navigate to directory `/Bone-To-ThePast`
+- in terminal, navigate to directory `/Bone-To-The-Past`
 - enter `npm install` in terminal
 - enter `npm start`
 - open browser of choice, navigate to `localhost:3000`
