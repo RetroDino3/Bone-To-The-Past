@@ -4,6 +4,8 @@ Embark on a treacherous journey into the distant past. You are a contemporary pe
 ## Usage
 [Visit Bone To The Past here](https://bone-to-the-past.herokuapp.com/), on Heroku.
 
+<iframe src="https://giphy.com/embed/JnxQfTwmt6ncpJ4dLF" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/JnxQfTwmt6ncpJ4dLF">via GIPHY</a></p>
+
 **Install locally**
 - fork and clone this repo
 - in terminal, navigate to directory `/Bone-To-The-Past`
