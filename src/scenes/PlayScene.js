@@ -42,7 +42,6 @@ export default class PlayScene extends Phaser.Scene {
     this.load.tilemapTiledJSON('tilemap', '/static/stage1.json')
     this.load.atlas('hero', '/static/hero.png', '/static/hero.json')
     this.load.atlas('dino-horse', '/static/dino1.png', '/static/dino1.json')
-    this.load.image('fullScreen', '/static/egg-outline.png')
     this.load.audio('battle1', '/static/Battle Theme 1.mp3')
   }
 
@@ -123,9 +122,9 @@ export default class PlayScene extends Phaser.Scene {
       this.playerController.update(dt)
     }
 
-    if (this.player.body.position.y > 600 && lives > 1) {
+    if (this.player.body.position.y > 580 && lives > 1) {
       this.fallDeath()
-    } else if (this.player.body.position.y > 600 && lives === 1) {
+    } else if (this.player.body.position.y > 580 && lives === 1) {
       this.battle1.stop()
       this.scene.stop('UIScene')
       lives = 3

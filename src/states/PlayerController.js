@@ -9,6 +9,7 @@ export default class PlayerController {
     this.cursors = cursors
     this.obstacles = obstacles
     this.lastDinosaur
+    this.speed = 1.1
 
     this.createHeroAnimations()
 
@@ -109,14 +110,12 @@ export default class PlayerController {
   }
 
   walkOnUpdate() {
-    const speed = 1
-
     if (this.cursors.left.isDown) {
       this.sprite.flipX = true
-      this.sprite.setVelocityX(-speed)
+      this.sprite.setVelocityX(-this.speed)
     } else if (this.cursors.right.isDown) {
       this.sprite.flipX = false
-      this.sprite.setVelocityX(speed)
+      this.sprite.setVelocityX(this.speed)
     } else {
       this.sprite.setVelocityX(0)
       this.stateMachine.setState('idle')
@@ -138,14 +137,12 @@ export default class PlayerController {
   }
 
   jumpOnUpdate() {
-    const speed = 1
-
     if (this.cursors.left.isDown) {
       this.sprite.flipX = true
-      this.sprite.setVelocityX(-speed)
+      this.sprite.setVelocityX(-this.speed)
     } else if (this.cursors.right.isDown) {
       this.sprite.flipX = false
-      this.sprite.setVelocityX(speed)
+      this.sprite.setVelocityX(this.speed)
     }
     if (this.sprite.body.velocity.y > 0) {
       this.stateMachine.setState('fall')
@@ -157,14 +154,12 @@ export default class PlayerController {
   }
 
   fallOnUpdate() {
-    const speed = 1
-
     if (this.cursors.left.isDown) {
       this.sprite.flipX = true
-      this.sprite.setVelocityX(-speed)
+      this.sprite.setVelocityX(-this.speed)
     } else if (this.cursors.right.isDown) {
       this.sprite.flipX = false
-      this.sprite.setVelocityX(speed)
+      this.sprite.setVelocityX(this.speed)
     }
   }
 
