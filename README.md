@@ -20,6 +20,9 @@ https://user-images.githubusercontent.com/86635599/152384675-9931c526-0610-42f2-
 - jump onto dinosaurs to kill them
 - getting hit by dinosaur will reduce life count
 - destroy all of the dinosaurs in each level and collect their bones. 
+- P key to pause gameplay
+- R key to resume gameplay
+- esc key to exit fullscreen
 
 ## Roadmap
 - add ability to lose health from collision with dinosaur sprites and environmental hazards
