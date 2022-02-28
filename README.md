@@ -31,5 +31,14 @@ https://user-images.githubusercontent.com/86635599/152384675-9931c526-0610-42f2-
 - add User signup/login
 - add save states; User can have multiple save states
 
+## Developers
+
+Meet the devs at RetroDino3!
+
+- Joel Bascombe - [Github](https://github.com/Jab1172) | [LinkedIn](https://www.linkedin.com/in/joel-bascombe13/)
+- Angel Hernandez - [Github](https://github.com/am-hernandez) | [LinkedIn](https://www.linkedin.com/in/angel-m-hernandez/)
+- Juan Mateo - [Github](https://github.com/jmateoFSA) | [LinkedIn](https://www.linkedin.com/in/juan-mateo-fsa/)
+
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
